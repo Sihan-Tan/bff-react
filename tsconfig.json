@@ -1,13 +1,26 @@
 {
+  // "files": ["./typings/index.d.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compileOnSave": true,
+  "strict": true,
   "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": "./",
+    "paths": {
+      "@*": ["src/web/*", "src/server/*"]
+    },
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "esModuleInterop": true,
-    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./node_modules/@types"],
-    "baseUrl": "./"
-  },
-  "include": ["./src/**/*.ts"]
+    "typeRoots": [
+      "./src/web/typings",
+      "./src/server/typings",
+      "./node_modules/@types"
+    ],
+    "esModuleInterop": true,
+    "jsx": "react"
+  }
 }
