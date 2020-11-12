@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": "./"
+  },
+  "include": ["./src/**/*.ts"]
+}
