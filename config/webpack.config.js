@@ -1,6 +1,8 @@
 const { resolve } = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const notifier = require("node-notifier");
 
 module.exports = {
   mode: "development",
@@ -8,15 +10,20 @@ module.exports = {
     app: resolve(__dirname, "..", "src/web/index.tsx"),
   },
   output: {
-    path: resolve(__dirname, "..", "dist"),
-    filename: "js/[name]_[contenthash:5].js",
-    chunkFilename: "js/[name]_[id]_[contenthash:5].js",
+    path: resolve(__dirname, "..", "dist/assets"),
+    filename: "scripts/[name]_[contenthash:5].js",
+    // chunkFilename: "scripts/[name]_[id]_[contenthash:5].js",
+    assetModuleFilename: "scripts/[name].[contenthash:5].bundule.[ext]",
+  },
+  experiments: {
+    asset: true,
   },
   resolve: {
     alias: {
       "@": resolve(__dirname, "..", "src/web/"),
       "@api": resolve(__dirname, "..", "src/web/api"),
       "@assets": resolve(__dirname, "..", "src/web/assets"),
+      "@config": resolve(__dirname, "..", "src/web/config"),
       "@components": resolve(__dirname, "..", "src/web/components"),
       "@hooks": resolve(__dirname, "..", "src/web/hooks"),
       "@models": resolve(__dirname, "..", "src/web/models"),
@@ -51,58 +58,62 @@ module.exports = {
               esModule: false,
             },
           },
-          { loader: "css-loader" },
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+            },
+          },
           {
             loader: "less-loader",
             options: {
               lessOptions: {
-                modifyVars: {
-                  // "@primary-color": "red",
-                },
-                // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
                 javascriptEnabled: true,
               },
             },
           },
+          { loader: "postcss-loader" },
         ],
       },
       {
-        test: /\.(pdf|csv|json|txt|avi)$/i,
-        loader: "file-loader",
-        options: {
-          name: "file/[name]_[contenthash:5].[ext]",
-        },
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg|bmp)$/i,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              name: "images/[name]_[contenthash:5].[ext]",
-              limit: 8192,
-              esModule: false,
-            },
-          },
-        ],
+        test: /\.(png|jpg|jpeg|gif|eot|woff|woff2|ttf|svg|otf)$/,
+        type: "asset",
       },
     ],
   },
   plugins: [
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
-        messages: ["You application is running here http://localhost:8080"],
         notes: [
           "Some additionnal notes to be displayed unpon successful compilation",
         ],
+        messages: ["You application is running here http://localhost:8080"],
       },
-      onErrors: function (severity, errors) {},
+      onErrors: function (severity, errors) {
+        if (severity !== "error") {
+          return;
+        }
+        notifier.notify(
+          {
+            title: "Webpack React",
+            message: "Webpack Compile Error",
+            icon: "", // Absolute path (doesn't work on balloons)
+            sound: true, // Only Notification Center or Windows Toasters
+            wait: true, // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
+          },
+          function (err, response) {
+            // Response is response from notification
+          }
+        );
+      },
       clearConsole: true,
     }),
+    new ProgressBarPlugin(),
     new MiniCssExtractPlugin({
       // 配置样式文件抽离插件
-      filename: "css/[name].[contenthash:5].css",
-      chunkFilename: "css/[name]_[id].[contenthash:5].css",
+      filename: "styles/[name].[contenthash:5].css",
+      chunkFilename: "styles/[name]_[id].[contenthash:5].css",
+      ignoreOrder: true,
     }),
   ],
 };

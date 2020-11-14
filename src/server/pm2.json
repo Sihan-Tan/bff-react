@@ -1,0 +1,9 @@
+{
+  "name": "node-app",
+  "script": "app.js",
+  "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+  "out_file": "log/node-app.stdout.log",
+  "watch": true,
+  "instances": "4",
+  "exec_mode": "cluster"
+}

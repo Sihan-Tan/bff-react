@@ -1,0 +1,20 @@
+{
+  "include": ["**/*.ts"],
+  "compileOnSave": true,
+  "strict": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": "./",
+    "paths": {
+      "@*": ["*"]
+    },
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./typings"],
+    "esModuleInterop": true
+  }
+}
