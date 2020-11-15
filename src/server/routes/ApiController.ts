@@ -1,7 +1,7 @@
-import { GET, route } from "awilix-koa";
-import Router from "koa-router";
+import { GET, route } from 'awilix-koa';
+import Router from 'koa-router';
 
-@route("/api")
+@route('/api')
 class ApiController {
   private apiService;
 
@@ -9,14 +9,14 @@ class ApiController {
     this.apiService = apiService;
   }
 
-  @route("/list")
+  @route('/list')
   @GET()
   async actionList(ctx: Router.IRouterContext) {
     const data = await this.apiService.getInfo();
     ctx.body = data;
   }
 
-  @route("/data")
+  @route('/data')
   @GET()
   async dataList(ctx: Router.IRouterContext) {
     const data = await this.apiService.getData();

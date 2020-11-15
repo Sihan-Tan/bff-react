@@ -1,7 +1,7 @@
-import config from "./config";
+import config from './config';
 
-export const getData = () => {
+export var getData = function getData() {
   return config({
-    url: "/api/list",
+    url: '/api/list',
   });
 };

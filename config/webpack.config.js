@@ -40,9 +40,17 @@ module.exports = {
       {
         test: /\.(js|ts|tsx)$/,
         exclude: /(node_modules|bower_components)/,
+        enforce: "pre",
         use: [
           "thread-loader",
           "cache-loader",
+          {
+            loader: "eslint-loader",
+            options: {
+              //自动修复eslint的错误
+              fix: true,
+            },
+          },
           {
             loader: "babel-loader",
           },
@@ -61,24 +69,71 @@ module.exports = {
           {
             loader: "css-loader",
             options: {
-              importLoaders: 1,
+              // importLoaders: 1,
             },
           },
+          { loader: "postcss-loader" },
           {
             loader: "less-loader",
             options: {
               lessOptions: {
+                modifyVars: {
+                  "primary-color": "#AC9455",
+                  "border-color-base": "#AC9455",
+                },
                 javascriptEnabled: true,
               },
             },
           },
-          { loader: "postcss-loader" },
+          {
+            loader: "style-resources-loader",
+            options: {
+              patterns: [
+                resolve(__dirname, "../", "src/web/assets/styles/var.less"),
+              ],
+              // injector: (source, resources) => {
+              //   const combineAll = (type) =>
+              //     resources
+              //       .filter(({ file }) => file.includes(type))
+              //       .map(({ file, content }) => {
+              //         return content;
+              //       })
+              //       .join("");
+
+              //   const str = `@import './mixin';`;
+              //   return (
+              //     combineAll("var") +
+              //     source.replace(str, str + "\n" + combineAll("var"))
+              //   );
+              // },
+            },
+          },
         ],
       },
       {
-        test: /\.(png|jpg|jpeg|gif|eot|woff|woff2|ttf|svg|otf)$/,
-        type: "asset",
+        test: /\.(pdf|csv|json|txt|avi)$/i,
+        loader: "file-loader",
+        options: {
+          name: "file/[name]_[contenthash:5].[ext]",
+        },
       },
+      {
+        test: /\.(png|jpe?g|gif|svg|bmp)$/i,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              name: "images/[name]_[contenthash:5].[ext]",
+              limit: 8192,
+              esModule: false,
+            },
+          },
+        ],
+      },
+      // {
+      //   test: /\.(png|jpg|jpeg|gif|eot|woff|woff2|ttf|svg|otf)$/,
+      //   type: "asset",
+      // },
     ],
   },
   plugins: [
@@ -93,18 +148,13 @@ module.exports = {
         if (severity !== "error") {
           return;
         }
-        notifier.notify(
-          {
-            title: "Webpack React",
-            message: "Webpack Compile Error",
-            icon: "", // Absolute path (doesn't work on balloons)
-            sound: true, // Only Notification Center or Windows Toasters
-            wait: true, // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
-          },
-          function (err, response) {
-            // Response is response from notification
-          }
-        );
+        notifier.notify({
+          title: "Webpack React",
+          message: "Webpack Compile Error",
+          icon: "", // Absolute path (doesn't work on balloons)
+          sound: true, // Only Notification Center or Windows Toasters
+          wait: true, // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
+        });
       },
       clearConsole: true,
     }),

@@ -1,57 +1,50 @@
-import React, { Suspense } from "react";
-import { Switch, Route, RouteProps } from "react-router-dom";
+import React, { Suspense } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Home from '@pages/home';
 
-import Home from "@pages/home";
-import About from "@pages/about";
-import User from "@pages/user";
-import Hooks from "@pages/hooks";
-import Index from "@pages/index";
+const About = /* #__PURE__ */React.lazy(() => import('@pages/about'));
+const User = /* #__PURE__ */React.lazy(() => import('@pages/user'));
+const Hooks = /* #__PURE__ */React.lazy(() => import('@pages/hooks'));
+const Index = /* #__PURE__ */React.lazy(() => import('@pages/index'));
+export var routes = [{
+  path: '/',
+  exact: true,
+  component: Home,
+}, {
+  path: '/user',
+  exact: true,
+  component: User,
+}, {
+  path: '/about',
+  exact: true,
+  component: About,
+}, {
+  path: '/hooks',
+  exact: true,
+  component: Hooks,
+}, {
+  path: '/index',
+  exact: true,
+  component: Index,
+}];
 
-export const routes: RouteProps[] = [
-  {
-    path: "/",
-    exact: true,
-    component: Home,
-  },
-  {
-    path: "/user",
-    exact: true,
-    component: User,
-  },
-  {
-    path: "/about",
-    exact: true,
-    component: About,
-  },
-  {
-    path: "/hooks",
-    exact: true,
-    component: Hooks,
-  },
-  {
-    path: "/index",
-    exact: true,
-    component: Index,
-  },
-];
-
-const Routes = () => (
-  <Suspense fallback={<div>12</div>}>
-    <Switch>
-      {routes.map((route, index) => {
-        const { path, component, exact } = route;
-        const LazyCom: any = component;
-        return (
-          <Route
-            key={index}
-            exact={exact}
-            path={path}
-            render={(props) => <LazyCom {...props} />}
-          />
-        );
-      })}
-    </Switch>
-  </Suspense>
-);
+const Routes = function Routes() {
+  return /* #__PURE__ */React.createElement(Suspense, {
+    fallback: /* #__PURE__ */React.createElement('div', null, '12'),
+  }, /* #__PURE__ */React.createElement(Switch, null, routes.map((route, index) => {
+    const { path } = route;
+    const { component } = route;
+    const { exact } = route;
+    const LazyCom = component;
+    return /* #__PURE__ */React.createElement(Route, {
+      key: index,
+      exact,
+      path,
+      render: function render(props) {
+        return /* #__PURE__ */React.createElement(LazyCom, props);
+      },
+    });
+  })));
+};
 
 export default Routes;

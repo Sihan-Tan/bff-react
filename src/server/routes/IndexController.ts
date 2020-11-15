@@ -1,6 +1,6 @@
-import { GET, route } from "awilix-koa";
+import { GET, route } from 'awilix-koa';
 
-@route("/")
+@route('/')
 class IndexController {
   private apiService;
 
@@ -8,11 +8,11 @@ class IndexController {
     this.apiService = apiService;
   }
 
-  @route("/")
+  @route('/')
   @GET()
   async actionList(ctx: any) {
     // const data = await this.indexService.getInfo();
-    ctx.body = await ctx.render("index", await this.apiService.getData());
+    ctx.body = await ctx.render('index', await this.apiService.getData());
   }
 }
 

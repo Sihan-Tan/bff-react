@@ -1,14 +1,11 @@
-import axios from "axios";
-import qs from "qs";
-import config from "../config/global";
+import axios from 'axios';
+import config from '../config/global';
 
 const service = axios.create({
   baseURL: config.baseUrl + config.path,
   timeout: window.location.href.match(/dev|localhost/g) ? 5000 : 20000,
   withCredentials: true,
-});
-
-// request interceptor
+}); // request interceptor
 // service.interceptors.request.use(
 //   (config) => {
 //     // do something before request is sent
@@ -24,7 +21,6 @@ const service = axios.create({
 //     return Promise.reject(error);
 //   }
 // );
-
 // // 响应拦截器
 // service.interceptors.response.use(
 //   (response) => {

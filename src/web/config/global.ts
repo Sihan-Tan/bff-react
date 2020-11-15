@@ -1,11 +1,5 @@
-interface Config {
-  baseUrl: string;
-  path: string;
-}
-
-const config: Config = {
-  baseUrl: "",
-  path: "",
+const config = {
+  baseUrl: '',
+  path: '',
 };
-
 export default config;

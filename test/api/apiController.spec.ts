@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 const axios = require("axios");
 describe("node接口", () => {
   test("test接口测试", () => {

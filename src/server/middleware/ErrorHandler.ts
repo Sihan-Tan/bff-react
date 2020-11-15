@@ -1,5 +1,5 @@
-import Koa from "koa";
-import { Logger } from "log4js";
+import Koa from 'koa';
+import { Logger } from 'log4js';
 
 class ErrorHandler {
   static error(app: Koa, logger: Logger) {
@@ -8,7 +8,7 @@ class ErrorHandler {
         await next();
       } catch (e) {
         logger.error(e);
-        ctx.body = "500请求啦~恢复中.";
+        ctx.body = '500请求啦~恢复中.';
       }
     });
     app.use(async (ctx: any, next: () => Promise<unknown>) => {
@@ -16,8 +16,7 @@ class ErrorHandler {
       if (ctx.status !== 404) {
         return;
       }
-      ctx.body =
-        '<script type="text/javascript" src="//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js" charset="utf-8"></script>';
+      ctx.body = '<script type="text/javascript" src="//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js" charset="utf-8"></script>';
     });
   }
 }

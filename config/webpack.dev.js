@@ -6,6 +6,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devConfig = {
   mode: "development",
   devtool: "inline-source-map",
+  output: {
+    path: resolve(__dirname, "..", "dist/assets"),
+    filename: "scripts/[name]_[contenthash:5].js",
+    publicPath: "/",
+    assetModuleFilename: "scripts/[name].[contenthash:5].[ext]",
+  },
   devServer: {
     historyApiFallback: true,
     compress: true,

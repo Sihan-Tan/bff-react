@@ -1,1 +1,1 @@
-gulp dev
+cross-env NODE_ENV=development gulp dev

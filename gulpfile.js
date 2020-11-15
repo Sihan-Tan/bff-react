@@ -15,38 +15,42 @@ const babelConfig = {
     "@babel/plugin-transform-modules-commonjs",
   ],
 };
-const entry = ["src/server/**/*"];
+const entry = [
+  "src/server/**/*",
+  "!src/server/tsconfig.json",
+  "!src/server/typings/**",
+];
 const cleanEntry = [
+  "node_modules",
   "src/server/pm2.json",
   "src/server/tsconfig.json",
+  "src/server/typings",
   "src/server/views",
-  "src/server/libs/**/*",
+  "src/server/libs",
 ];
 
 async function clean() {
   // You can use multiple globbing patterns as you would with `gulp.src`,
   // for example if you are using del 2.0 or above, return its promise
-  return await del(["dist/**/*.*", "!dist/assets/", "!dist/views/"]);
+  return await del(["dist/**/*.*", "!dist/assets/**/*.*", "!dist/views/*.*"]);
 }
 
 //上线环境
 function buildProd() {
-  return (
-    gulp
-      .src(entry)
-      // .pipe(
-      //   babel({
-      //     babelrc: false,
-      //     ignore: cleanEntry,
-      //     ...babelConfig,
-      //   })
-      // )
-      .pipe(gulp.dest("dist"))
-  );
+  return gulp
+    .src(entry)
+    .pipe(
+      babel({
+        babelrc: false,
+        ignore: cleanEntry,
+        ...babelConfig,
+      })
+    )
+    .pipe(gulp.dest("dist"));
 }
 function buildLint() {
   return gulp
-    .src(entry)
+    .src("src/server")
     .pipe(
       eslint({
         rules: {
@@ -62,7 +66,7 @@ function buildLint() {
 function buildDev() {
   //开发环境整体拷贝
   return watch(
-    entry,
+    [...entry, "src/server/logs"],
     {
       ignoreInitial: false,
     },
@@ -72,7 +76,7 @@ function buildDev() {
   );
 }
 let dev = gulp.series(buildDev);
-let prod = gulp.series(clean, buildProd);
+let prod = gulp.series(clean, buildLint, buildProd);
 let lint = gulp.series(buildLint);
 
 gulp.task("default", lint);

@@ -1,22 +1,22 @@
-import { extend } from "lodash";
-import { join } from "path";
+import { extend } from 'lodash';
+import { join } from 'path';
 
 let config = {
-  viewDir: join(__dirname, "..", "views"),
-  staticDir: join(__dirname, "..", "assets"),
+  viewDir: join(__dirname, '..', 'views'),
+  staticDir: join(__dirname, '..', 'assets'),
   port: 3000,
   memoryFlag: false,
 };
-if (process.env.NODE_ENV === "development") {
-  let localConfig = {
+if (process.env.NODE_ENV === 'development') {
+  const localConfig = {
     port: 3000,
   };
   config = extend(config, localConfig);
 }
-if (process.env.NODE_ENV === "production") {
-  let prodConfig = {
+if (process.env.NODE_ENV === 'production') {
+  const prodConfig = {
     port: 8082,
-    memoryFlag: "memory",
+    memoryFlag: 'memory',
   };
   config = extend(config, prodConfig);
 }

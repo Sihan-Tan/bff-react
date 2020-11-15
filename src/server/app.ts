@@ -43,7 +43,7 @@ app.context.render = co.wrap(
   render({
     root: viewDir,
     autoescape: true,
-    varControls: ["[[", "]]"],
+    // varControls: ["[[", "]]"],
     cache: memoryFlag, // disable, set to false
     ext: "html",
   })
@@ -55,6 +55,6 @@ ErrorHandler.error(app, logger);
 app.use(historyApiFallback({ index: "/", whiteList: ["/api"] }));
 app.use(loadControllers(`${__dirname}/routes/*.ts`));
 
-app.listen(port, function () {
+app.listen(port, () => {
   console.log(`server start at localhost:${port}`);
 });

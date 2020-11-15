@@ -1,3 +1,5 @@
+const { resolve } = require("path");
+
 module.exports = {
   //设置识别哪些文件是测试文件（glob形式），与testRegex互斥，不能同时写
   //"**/tests/**/*.ts?(x)",
@@ -6,6 +8,20 @@ module.exports = {
   //testRegex: '(/__tests__).*|(\\.|/)(test|spec))\\.jsx?$',
   //测试环境，默认值是：jsdom，可修改为node
   testEnvironment: "jsdom",
+  reporters: [
+    "default",
+    [
+      "jest-stare",
+      {
+        resultDir: resolve(__dirname, "docs/jest-stare"),
+        reportTitle: "jest-stare!",
+        additionalResultsProcessors: ["jest-junit"],
+        coverageLink: resolve(__dirname, "docs/jest-coverage/index.html"),
+        jestStareConfigJson: "jest-stare.json",
+        jestGlobalConfigJson: "globalStuff.json",
+      },
+    ],
+  ],
   rootDir: "", //默认值：当前目录，一般是package.json所在的目录。
   transform: {
     ".(ts|tsx)": "ts-jest",
